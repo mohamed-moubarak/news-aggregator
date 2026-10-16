@@ -28,6 +28,5 @@ coverage
 .env
 .env.*
 !.env.example
-*.pdf
 .claude/
 design/
