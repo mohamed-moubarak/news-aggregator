@@ -8,7 +8,8 @@ interface MobileFiltersProps {
   filters: SearchFilters
   onChange: (patch: Partial<SearchFilters>) => void
   onClear: () => void
-  resultCount?: number
+  /** e.g. "46" or "50+" while more pages are available. */
+  resultCount?: string
 }
 
 /** Bottom sheet with the full filter panel; filters apply as they change. */

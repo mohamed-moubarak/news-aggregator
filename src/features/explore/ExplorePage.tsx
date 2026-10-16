@@ -1,4 +1,5 @@
 import { Button, Skeleton } from '@heroui/react'
+import { useCallback } from 'react'
 import { useLocation } from 'react-router'
 
 import { ResultRow } from '@/components/article'
@@ -36,6 +37,14 @@ export function ExplorePage() {
   const focusSearch = (useLocation().state as { focusSearch?: boolean } | null)?.focusSearch
   const results = useInfiniteArticles(filters)
   const hasFilters = countFilters(filters) > 0
+  // Stable so the search box's debounce timer isn't reset by unrelated re-renders.
+  const onSearch = useCallback(
+    (keyword: string | undefined) => update({ keyword }, { replace: true }),
+    [update],
+  )
+  const resultCount = results.isPending
+    ? undefined
+    : `${results.articles.length}${results.hasNextPage ? '+' : ''}`
 
   const heading = filters.keyword ? `“${filters.keyword}”` : 'Latest news'
 
@@ -49,16 +58,12 @@ export function ExplorePage() {
 
       <section className="grid min-w-0 content-start gap-4" aria-labelledby="results-heading">
         <div className="flex gap-2.5">
-          <SearchBox
-            value={filters.keyword}
-            onSearch={(keyword) => update({ keyword }, { replace: true })}
-            autoFocus={focusSearch}
-          />
+          <SearchBox value={filters.keyword} onSearch={onSearch} autoFocus={focusSearch} />
           <MobileFilters
             filters={filters}
             onChange={update}
             onClear={clearFilters}
-            resultCount={results.isPending ? undefined : results.articles.length}
+            resultCount={resultCount}
           />
         </div>
 
@@ -71,8 +76,7 @@ export function ExplorePage() {
           </h1>
           {!results.isPending && !results.isError && (
             <span className="text-muted text-sm" aria-live="polite">
-              {results.articles.length}
-              {results.hasNextPage ? '+' : ''} articles
+              {resultCount} articles
             </span>
           )}
         </header>
