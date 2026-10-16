@@ -6,6 +6,7 @@ import { ResultRow } from '@/components/article'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { LoadMore } from '@/components/ui/LoadMore'
 import { ProviderFailures } from '@/components/ui/ProviderFailures'
+import { PullToRefresh } from '@/components/ui/PullToRefresh'
 import { useInfiniteArticles } from '@/hooks/useInfiniteArticles'
 
 import { ActiveFilters } from './ActiveFilters'
@@ -57,6 +58,7 @@ export function ExplorePage() {
       </aside>
 
       <section className="grid min-w-0 content-start gap-4" aria-labelledby="results-heading">
+        <PullToRefresh onRefresh={() => results.refetch()} />
         <div className="flex gap-2.5">
           <SearchBox value={filters.keyword} onSearch={onSearch} autoFocus={focusSearch} />
           <MobileFilters

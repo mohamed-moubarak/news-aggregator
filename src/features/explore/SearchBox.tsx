@@ -1,6 +1,8 @@
 import { SearchField } from '@heroui/react'
 import { useEffect, useState } from 'react'
 
+import { SEARCH_INPUT_ID } from './searchInputId'
+
 const DEBOUNCE_MS = 400
 
 interface SearchBoxProps {
@@ -8,8 +10,6 @@ interface SearchBoxProps {
   onSearch: (keyword: string | undefined) => void
   autoFocus?: boolean
 }
-
-export const SEARCH_INPUT_ID = 'explore-search'
 
 /** Keyword input that commits to the URL after typing pauses (or on Enter). */
 export function SearchBox({ value = '', onSearch, autoFocus }: SearchBoxProps) {

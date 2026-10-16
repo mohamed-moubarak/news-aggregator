@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
-import { SEARCH_INPUT_ID } from '@/features/explore/SearchBox'
+import { SEARCH_INPUT_ID } from '@/features/explore/searchInputId'
 
 export const isMac = () =>
   typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)

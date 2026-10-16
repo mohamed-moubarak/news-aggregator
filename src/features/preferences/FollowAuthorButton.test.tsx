@@ -11,7 +11,7 @@ it('toggles following an author', async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Follow Jane Doe' }))
   expect(usePreferences.getState().authors).toEqual(['Jane Doe'])
 
-  const following = screen.getByRole('button', { name: 'Unfollow Jane Doe' })
+  const following = screen.getByRole('button', { name: 'Following Jane Doe' })
   expect(following).toHaveAttribute('aria-pressed', 'true')
   await userEvent.click(following)
   expect(usePreferences.getState().authors).toEqual([])
