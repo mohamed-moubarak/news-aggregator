@@ -4,7 +4,10 @@ import { ArticleCard } from './ArticleCard'
 import { ArticleCardSkeleton, LeadStorySkeleton } from './ArticleSkeletons'
 import { LeadStory } from './LeadStory'
 
-const GRID = 'grid gap-3 sm:grid-cols-2 md:gap-[18px] lg:grid-cols-3'
+const GRID = 'grid grid-flow-row-dense gap-3 sm:grid-cols-2 md:gap-[18px] lg:grid-cols-3'
+
+/** Every fifth card (with an image) goes wide, giving the grid an editorial rhythm. */
+const isFeatured = (article: Article, index: number) => index % 5 === 3 && !!article.imageUrl
 
 interface ArticleGridProps {
   articles: Article[]
@@ -19,8 +22,8 @@ export function ArticleGrid({ articles, withLead = false }: ArticleGridProps) {
     <div className="grid gap-3 md:gap-7">
       {withLead && lead && <LeadStory article={lead} />}
       <div className={GRID}>
-        {cards.map((a) => (
-          <ArticleCard key={a.id} article={a} />
+        {cards.map((a, i) => (
+          <ArticleCard key={a.id} article={a} featured={isFeatured(a, i)} />
         ))}
       </div>
     </div>

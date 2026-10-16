@@ -16,6 +16,7 @@ function TopBar() {
               key={to}
               to={to}
               end
+              viewTransition
               className={({ isActive }) =>
                 `rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors ${
                   isActive
@@ -40,6 +41,7 @@ function TopBar() {
           <NavLink
             to="/you"
             aria-label="Your preferences"
+            viewTransition
             className="bg-foreground text-background hidden size-9 place-items-center rounded-full text-xs font-semibold md:grid"
           >
             You
@@ -61,6 +63,7 @@ function BottomNav() {
           key={to}
           to={to}
           end
+          viewTransition
           className={({ isActive }) =>
             `grid justify-items-center gap-1 text-[11px] ${isActive ? 'text-accent font-semibold' : 'text-muted'}`
           }

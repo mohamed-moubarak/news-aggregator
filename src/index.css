@@ -85,3 +85,16 @@
     border-color: var(--spine-dark);
   }
 }
+
+/* Page changes cross-fade via React Router's View Transitions support. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

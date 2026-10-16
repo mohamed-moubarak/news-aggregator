@@ -30,6 +30,7 @@ interface NytDoc {
   abstract?: string
   snippet?: string
   pub_date: string
+  word_count?: number
   section_name?: string
   headline: { main: string }
   byline?: { original?: string | null }
@@ -58,6 +59,7 @@ export const toArticle = (doc: NytDoc): Article => ({
   imageUrl: imageOf(doc.multimedia),
   author: cleanAuthor(doc.byline?.original),
   publishedAt: doc.pub_date,
+  wordCount: doc.word_count || undefined,
   outlet: OUTLET,
   category: fromProviderValue(NYT_SECTIONS, doc.section_name),
 })

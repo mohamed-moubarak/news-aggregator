@@ -4,6 +4,7 @@ import { outletStyle } from '@/lib/outletColor'
 import { ArticleImage } from './ArticleImage'
 import { ArticleLink } from './ArticleLink'
 import { ArticleMeta } from './ArticleMeta'
+import { OutletFavicon } from './OutletFavicon'
 
 /** The top story: large image beside a headline, with the outlet color as a rule. */
 export function LeadStory({ article }: { article: Article }) {
@@ -18,7 +19,10 @@ export function LeadStory({ article }: { article: Article }) {
         fallback={<div className="bg-spine hidden md:block" aria-hidden />}
       />
       <div className="border-spine flex flex-col gap-3 border-t-[5px] p-5 md:gap-3.5 md:border-t-0 md:border-l-[6px] md:p-10">
-        <span className="text-spine text-xs font-semibold">{article.outlet.name}</span>
+        <span className="text-spine flex items-center gap-2 text-xs font-semibold">
+          <OutletFavicon url={article.url} />
+          {article.outlet.name}
+        </span>
         <h2 className="font-serif text-2xl leading-tight font-medium tracking-[-0.015em] text-balance group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 md:text-[34px] md:leading-[1.12]">
           <ArticleLink href={article.url}>{article.title}</ArticleLink>
         </h2>
