@@ -1,8 +1,9 @@
 import { Button } from '@heroui/react'
-import { useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { CategoryPicker } from '@/components/pickers/CategoryPicker'
 import { OutletPicker } from '@/components/pickers/OutletPicker'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { Notice } from '@/components/ui/Notice'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { AuthorsEditor } from '@/features/preferences/AuthorsEditor'
@@ -22,31 +23,22 @@ function Section({ title, hint, children }: { title: string; hint: string; child
   )
 }
 
-/** Two-step reset so a stray tap doesn't wipe preferences. */
 function ResetPreferences({ onReset }: { onReset: () => void }) {
-  const [confirming, setConfirming] = useState(false)
-  return confirming ? (
-    <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Confirm reset">
-      <span className="text-sm">Reset outlets, topics and authors?</span>
-      <Button
-        variant="danger"
-        onPress={() => {
-          onReset()
-          setConfirming(false)
-        }}
-      >
-        Reset
-      </Button>
-      <Button variant="ghost" onPress={() => setConfirming(false)}>
-        Keep them
-      </Button>
-    </div>
-  ) : (
-    <div>
-      <Button variant="ghost" className="text-danger" onPress={() => setConfirming(true)}>
-        Reset all preferences
-      </Button>
-    </div>
+  return (
+    <ConfirmDialog
+      trigger={
+        <Button variant="ghost" className="text-danger">
+          Reset all preferences
+        </Button>
+      }
+      title="Reset your preferences?"
+      confirmLabel="Reset"
+      cancelLabel="Keep them"
+      onConfirm={onReset}
+    >
+      Your followed outlets, topics and authors will be cleared on this device, and your briefing
+      goes back to our picks.
+    </ConfirmDialog>
   )
 }
 
@@ -89,7 +81,9 @@ export function ProfilePage() {
         >
           <AuthorsEditor />
         </Section>
-        <ResetPreferences onReset={reset} />
+        <div>
+          <ResetPreferences onReset={reset} />
+        </div>
       </div>
     </div>
   )

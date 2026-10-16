@@ -1,6 +1,8 @@
 import { DateField, DateRangePicker, Label, RangeCalendar } from '@heroui/react'
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date'
 
+import { ToggleChip } from '@/components/ui/ToggleChip'
+
 import { DATE_PRESETS, matchPreset, presetRange } from './datePresets'
 
 interface DateRangeFilterProps {
@@ -12,35 +14,24 @@ interface DateRangeFilterProps {
 export function DateRangeFilter({ from, to, onChange }: DateRangeFilterProps) {
   const value = from && to ? { start: parseDate(from), end: parseDate(to) } : null
   const active = matchPreset(from, to)
-  const option = (selected: boolean) =>
-    `min-h-9 rounded-full border px-3 text-[13px] font-medium transition-colors ${
-      selected
-        ? 'bg-accent-soft text-accent-soft-foreground border-transparent'
-        : 'border-border hover:bg-default'
-    }`
-
   return (
     <div className="grid gap-2.5">
       <div role="group" aria-label="Date" className="flex flex-wrap gap-2">
         <span className="w-full text-sm font-semibold">Date</span>
-        <button
-          type="button"
-          aria-pressed={!from && !to}
-          className={option(!from && !to)}
-          onClick={() => onChange({ from: undefined, to: undefined })}
+        <ToggleChip
+          selected={!from && !to}
+          onToggle={() => onChange({ from: undefined, to: undefined })}
         >
           Any time
-        </button>
+        </ToggleChip>
         {DATE_PRESETS.map((p) => (
-          <button
+          <ToggleChip
             key={p.id}
-            type="button"
-            aria-pressed={active?.id === p.id}
-            className={option(active?.id === p.id)}
-            onClick={() => onChange(presetRange(p))}
+            selected={active?.id === p.id}
+            onToggle={() => onChange(presetRange(p))}
           >
             {p.label}
-          </button>
+          </ToggleChip>
         ))}
       </div>
       <DateRangePicker
