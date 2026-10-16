@@ -10,6 +10,8 @@ export interface ArticleQuery {
   /** Restrict to these outlets; empty/undefined means each provider's defaults. */
   outletIds?: string[]
   authors?: string[]
+  /** Find articles by this writer (byline search where the provider supports it). */
+  byline?: string
   /** 1-based. */
   page?: number
 }

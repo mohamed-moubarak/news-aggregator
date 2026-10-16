@@ -150,7 +150,9 @@ export function createNewsApiProvider(): NewsProvider {
       const data = await getJson<NewsApiEverythingResponse>(
         '/api/newsapi/everything',
         {
-          q: query.keyword,
+          // No byline search; a phrase match is the best available, and the
+          // aggregator's author filter drops articles not by this writer.
+          q: query.byline ? `"${query.byline}"` : query.keyword,
           sources: sources.join(','),
           from: range.from,
           to: range.to,

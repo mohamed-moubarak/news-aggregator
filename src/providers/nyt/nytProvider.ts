@@ -75,7 +75,8 @@ export const nytProvider: NewsProvider = {
     const data = await getJson<NytResponse>(
       '/api/nyt/articlesearch.json',
       {
-        q: query.keyword,
+        // NYT's keyword search also covers bylines.
+        q: query.byline ? `"${query.byline}"` : query.keyword,
         begin_date: toCompactDate(query.from),
         end_date: toCompactDate(query.to),
         fq: buildSectionFilter(toProviderValues(NYT_SECTIONS, query.categories)),

@@ -39,6 +39,12 @@ describe('guardianProvider', () => {
     })
   })
 
+  it('scopes byline searches to the byline field', async () => {
+    const fetch = mockFetchJson({ response: { results: [] } })
+    await guardianProvider.search({ byline: 'Jane Doe' })
+    expect(requestedUrl(fetch).params).toMatchObject({ q: '"Jane Doe"', 'query-fields': 'byline' })
+  })
+
   it('normalizes results into articles', async () => {
     mockFetchJson({ response: { results: [result] } })
     const [article] = await guardianProvider.search({})

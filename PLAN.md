@@ -58,12 +58,12 @@ Approved mockups: "newsstand" direction. Each card has an outlet-coloured spine;
 | Reading time (Guardian and NYT only; NewsAPI has no word count) | Done (polish)                          |
 | 44px tap targets                                                | Done (polish), keep checking per phase |
 | Page transitions (View Transitions, no extra dependency)        | Done (polish)                          |
-| ⌘K opens search                                                 | Phase 3                                |
-| Removable filter chips, shareable URL                           | Phase 3                                |
-| Mobile filter sheet                                             | Phase 3                                |
-| Infinite scroll                                                 | Phase 3                                |
-| Follow an author from a card                                    | Phase 4                                |
-| First-visit picker: topics, outlets, authors                    | Phase 5                                |
+| ⌘K opens search                                                 | Done (Phase 3)                         |
+| Removable filter chips, shareable URL                           | Done (Phase 3)                         |
+| Mobile filter sheet                                             | Done (Phase 3)                         |
+| Infinite scroll                                                 | Done (Phase 3)                         |
+| Follow an author from a card                                    | Done (Phase 4)                         |
+| First-visit picker: topics, outlets, authors                    | Done (Phase 5)                         |
 | Pull to refresh                                                 | Phase 6                                |
 
 Animation note: HeroUI v3 doesn't ship Framer Motion. Use CSS/View Transitions and HeroUI's built-in overlay animations; add `motion` only if a specific interaction needs it.

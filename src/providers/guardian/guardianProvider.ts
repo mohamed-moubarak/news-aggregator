@@ -58,7 +58,9 @@ export const guardianProvider: NewsProvider = {
     const data = await getJson<GuardianResponse>(
       '/api/guardian/search',
       {
-        q: query.keyword,
+        // Byline search uses Guardian's field-scoped query; otherwise a normal keyword search.
+        q: query.byline ? `"${query.byline}"` : query.keyword,
+        'query-fields': query.byline ? 'byline' : undefined,
         'from-date': query.from,
         'to-date': query.to,
         section: sections.join('|') || undefined,
