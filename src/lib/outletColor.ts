@@ -4,16 +4,16 @@ type ColorPair = readonly [light: string, dark: string]
 const KNOWN: Record<string, ColorPair> = {
   'the-guardian': ['#052962', '#6f96ea'],
   'the-new-york-times': ['#2e2e2e', '#8a93a3'],
-  'bbc-news': ['#b80000', '#e2474b'],
-  'the-verge': ['#5200ff', '#9b6bff'],
-  'al-jazeera-english': ['#a87800', '#d9a521'],
+  'bbc-news': ['#b80000', '#ec6064'],
+  'the-verge': ['#5200ff', '#a985ff'],
+  'al-jazeera-english': ['#8a6300', '#d9a521'],
   wired: ['#0f7b6c', '#2fae99'],
-  cnn: ['#cc0000', '#f05050'],
+  cnn: ['#cc0000', '#f56b6b'],
   bloomberg: ['#6b2bd9', '#a57cf0'],
-  'national-geographic': ['#b38f00', '#e0bb2a'],
+  'national-geographic': ['#7d6400', '#e0bb2a'],
   'associated-press': ['#c8102e', '#ee5a6d'],
-  techcrunch: ['#028a0f', '#3cc24a'],
-  espn: ['#b5121b', '#e8545b'],
+  techcrunch: ['#027a0d', '#3cc24a'],
+  espn: ['#b5121b', '#ef6e74'],
 }
 
 const FALLBACK: ColorPair[] = [

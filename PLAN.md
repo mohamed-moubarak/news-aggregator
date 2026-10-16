@@ -64,7 +64,7 @@ Approved mockups: "newsstand" direction. Each card has an outlet-coloured spine;
 | Infinite scroll                                                 | Done (Phase 3)                         |
 | Follow an author from a card                                    | Done (Phase 4)                         |
 | First-visit picker: topics, outlets, authors                    | Done (Phase 5)                         |
-| Pull to refresh                                                 | Phase 6                                |
+| Pull to refresh                                                 | Done (Phase 6)                         |
 
 Animation note: HeroUI v3 doesn't ship Framer Motion. Use CSS/View Transitions and HeroUI's built-in overlay animations; add `motion` only if a specific interaction needs it.
 

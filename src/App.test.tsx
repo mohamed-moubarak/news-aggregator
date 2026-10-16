@@ -31,15 +31,20 @@ it('shows a not-found state for unknown routes', () => {
   expect(screen.getByText("This page doesn't exist")).toBeInTheDocument()
 })
 
-it('sends first-time visitors to the picker', () => {
+it('sends first-time visitors to the picker', async () => {
   usePreferences.setState(INITIAL_PREFERENCES)
   vi.stubGlobal(
     'fetch',
     vi.fn(() => new Promise(() => {})),
   )
   renderAt('/')
+  // The picker is a lazily loaded route, so allow time for its chunk to load.
   expect(
-    screen.getByRole('heading', { name: 'What do you want to read about?' }),
+    await screen.findByRole(
+      'heading',
+      { name: 'What do you want to read about?' },
+      { timeout: 5000 },
+    ),
   ).toBeInTheDocument()
   vi.unstubAllGlobals()
 })

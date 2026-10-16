@@ -25,7 +25,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
     >
       <div className="bg-spine flex flex-col items-center justify-between gap-3 py-3.5" aria-hidden>
         <OutletFavicon url={article.url} />
-        <span className="rotate-180 truncate text-[11px] font-semibold tracking-wide text-white [writing-mode:vertical-rl] md:text-xs">
+        <span className="rotate-180 truncate text-[11px] font-semibold tracking-wide text-white [writing-mode:vertical-rl] md:text-xs dark:text-[#0f1730]">
           {article.outlet.name}
         </span>
       </div>

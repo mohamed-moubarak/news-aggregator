@@ -15,7 +15,6 @@ export function FollowAuthorButton({ author }: { author: string }) {
     <button
       type="button"
       aria-pressed={following}
-      aria-label={following ? `Unfollow ${author}` : `Follow ${author}`}
       title={following ? `Unfollow ${author}` : `Follow ${author}`}
       onClick={() => (following ? unfollowAuthor(author) : followAuthor(author))}
       className={`relative z-10 inline-flex h-7 items-center gap-1 rounded-full border px-2.5 text-xs font-medium transition-colors after:absolute after:-inset-2 after:content-[''] ${
@@ -29,7 +28,9 @@ export function FollowAuthorButton({ author }: { author: string }) {
       ) : (
         <Plus className="size-3.5" aria-hidden />
       )}
-      {following ? 'Following' : 'Follow'}
+      {following ? 'Following ' : 'Follow '}
+      {/* Visible label first (WCAG label-in-name), author for context. */}
+      <span className="sr-only">{author}</span>
     </button>
   )
 }

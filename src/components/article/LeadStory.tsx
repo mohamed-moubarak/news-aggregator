@@ -15,6 +15,7 @@ export function LeadStory({ article }: { article: Article }) {
     >
       <ArticleImage
         src={article.imageUrl}
+        priority
         className="aspect-[16/10] size-full md:aspect-auto md:min-h-[360px]"
         fallback={<div className="bg-spine hidden md:block" aria-hidden />}
       />

@@ -1,4 +1,5 @@
 import { Button } from '@heroui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { Navigate } from 'react-router'
 
@@ -7,6 +8,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { LoadMore } from '@/components/ui/LoadMore'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { ProviderFailures } from '@/components/ui/ProviderFailures'
+import { PullToRefresh } from '@/components/ui/PullToRefresh'
 import { CATEGORIES, type ArticleQuery, type CategoryId } from '@/domain'
 import { usePreferences } from '@/features/preferences/preferencesStore'
 import { useInfiniteArticles } from '@/hooks/useInfiniteArticles'
@@ -33,6 +35,9 @@ export function FeedPage() {
     [outletIds, categories, topic],
   )
   const feed = useInfiniteArticles(query)
+  const queryClient = useQueryClient()
+  const refresh = () =>
+    Promise.all([feed.refetch(), queryClient.refetchQueries({ queryKey: ['author-stories'] })])
 
   if (!onboarded) return <Navigate to="/welcome" replace />
 
@@ -42,6 +47,7 @@ export function FeedPage() {
 
   return (
     <div className="grid gap-5 md:gap-7">
+      <PullToRefresh onRefresh={refresh} />
       <div className="grid gap-4">
         <PageHeader title={`${weekday()}'s briefing`} aside={source} />
         <TopicChips

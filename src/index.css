@@ -23,6 +23,9 @@
   --focus: var(--accent);
   --link: var(--accent);
   --highlight: #fff1a8;
+  /* Darker than HeroUI's defaults so small text meets WCAG AA (4.5:1). */
+  --danger: #c4231a;
+  --warning-soft-foreground: #6b4a00;
   --radius: 0.625rem;
   /* Fields sit on white surfaces, so they need a visible outline. */
   --field-border-width: 1px;
@@ -46,6 +49,7 @@
   --field-background: #1c263b;
   --field-border: #3a4762;
   --highlight: #5a4b12;
+  --warning-soft-foreground: #f3cf86;
 }
 
 @theme inline {
@@ -62,6 +66,8 @@
   }
   body {
     @apply min-h-dvh;
+    /* Our own pull-to-refresh replaces the browser's page reload gesture. */
+    overscroll-behavior-y: contain;
   }
   :focus-visible {
     @apply outline-focus outline-2 outline-offset-2;

@@ -19,9 +19,9 @@ export function ResultRow({ article, keyword }: { article: Article; keyword?: st
           <OutletFavicon url={article.url} />
           {article.outlet.name}
         </span>
-        <h3 className="font-serif text-lg leading-snug font-medium text-balance group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 md:text-xl">
+        <h2 className="font-serif text-lg leading-snug font-medium text-balance group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4 md:text-xl">
           <ArticleLink href={article.url}>{highlight(article.title, keyword)}</ArticleLink>
-        </h3>
+        </h2>
         {article.description && (
           <p className="text-body line-clamp-2 max-w-[70ch] font-serif text-[15px] leading-normal">
             {highlight(article.description, keyword)}
