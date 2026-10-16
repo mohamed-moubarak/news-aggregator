@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    image: briefly-news:latest
+    ports:
+      - '8080:8080'
+    # GUARDIAN_API_KEY, NYT_API_KEY, NEWSAPI_API_KEY (see .env.example)
+    env_file: .env
+    restart: unless-stopped
