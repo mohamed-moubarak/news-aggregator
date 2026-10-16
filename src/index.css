@@ -1,2 +1,87 @@
 @import 'tailwindcss';
 @import '@heroui/styles';
+
+/* Briefly theme: maps the approved palette onto HeroUI's semantic variables. */
+:root,
+.light,
+[data-theme='light'] {
+  --background: #e8ecf1;
+  --foreground: #172033;
+  --surface: #ffffff;
+  --surface-foreground: var(--foreground);
+  --overlay: #ffffff;
+  --muted: #5b6577;
+  --body: #3f4a5f;
+  --accent: #2b4eff;
+  --accent-foreground: #ffffff;
+  --border: #d3d9e2;
+  --separator: #dfe4eb;
+  --default: #e8ecf1;
+  --default-foreground: var(--foreground);
+  --field-background: #ffffff;
+  --field-border: #d3d9e2;
+  --focus: var(--accent);
+  --link: var(--accent);
+  --highlight: #fff1a8;
+  --radius: 0.625rem;
+}
+
+.dark,
+[data-theme='dark'] {
+  --background: #10172a;
+  --foreground: #f2f5fa;
+  --surface: #1c263b;
+  --surface-foreground: var(--foreground);
+  --overlay: #222d45;
+  --muted: #b4bdcc;
+  --body: #d0d6e1;
+  --accent: #8fa3ff;
+  --accent-foreground: #0f1730;
+  --border: #3a4762;
+  --separator: #2c3850;
+  --default: #26314a;
+  --default-foreground: var(--foreground);
+  --field-background: #1c263b;
+  --field-border: #3a4762;
+  --highlight: #5a4b12;
+}
+
+@theme inline {
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --color-body: var(--body);
+  --color-highlight: var(--highlight);
+}
+
+@layer base {
+  html {
+    @apply bg-background text-foreground font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply min-h-dvh;
+  }
+  :focus-visible {
+    @apply outline-focus outline-2 outline-offset-2;
+  }
+}
+
+/* Outlet spine color, set per element via outletStyle(). */
+@utility bg-spine {
+  background-color: var(--spine-light);
+  &:is(.dark *) {
+    background-color: var(--spine-dark);
+  }
+}
+@utility text-spine {
+  color: var(--spine-light);
+  &:is(.dark *) {
+    color: var(--spine-dark);
+  }
+}
+@utility border-spine {
+  border-color: var(--spine-light);
+  &:is(.dark *) {
+    border-color: var(--spine-dark);
+  }
+}
