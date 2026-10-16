@@ -6,13 +6,14 @@ import { outletStyle } from '@/lib/outletColor'
 
 import { CheckboxOption } from './CheckboxOption'
 
-interface OutletFilterProps {
+interface OutletPickerProps {
+  label?: string
   value: string[] | undefined
   onChange: (outletIds: string[] | undefined) => void
 }
 
 /** Searchable outlet checklist; selected outlets float to the top. */
-export function OutletFilter({ value = [], onChange }: OutletFilterProps) {
+export function OutletPicker({ label = 'Source', value = [], onChange }: OutletPickerProps) {
   const { data, isPending } = useOutlets()
   const [term, setTerm] = useState('')
 
@@ -30,7 +31,7 @@ export function OutletFilter({ value = [], onChange }: OutletFilterProps) {
       onChange={(next) => onChange(next.length ? next : undefined)}
       className="gap-2"
     >
-      <Label className="text-sm font-semibold">Source</Label>
+      <Label className="text-sm font-semibold">{label}</Label>
       <SearchField aria-label="Find an outlet" value={term} onChange={setTerm} variant="secondary">
         <SearchField.Group>
           <SearchField.SearchIcon />
