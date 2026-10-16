@@ -4,18 +4,18 @@ Innoscripta SE Frontend Developer case study.
 
 ## Requirements checklist
 
-| # | Requirement | Phase |
-|---|---|---|
-| F1 | Search articles by keyword | 3 |
-| F2 | Filter results by date, category, source | 3 |
-| F3 | Personalized feed: preferred sources, categories, authors | 4, 5 |
-| F4 | Mobile-responsive design | 2, 6 |
-| F5 | Clean, easy-to-read article display | 2, 6 |
-| D1 | At least 3 data sources | 1 |
-| T1 | React + TypeScript | 0 |
-| T2 | Containerized with Docker | 7 |
-| T3 | Clear docs for running in Docker | 8 |
-| T4 | DRY, KISS, SOLID | all |
+| #   | Requirement                                               | Phase |
+| --- | --------------------------------------------------------- | ----- |
+| F1  | Search articles by keyword                                | 3     |
+| F2  | Filter results by date, category, source                  | 3     |
+| F3  | Personalized feed: preferred sources, categories, authors | 4, 5  |
+| F4  | Mobile-responsive design                                  | 2, 6  |
+| F5  | Clean, easy-to-read article display                       | 2, 6  |
+| D1  | At least 3 data sources                                   | 1     |
+| T1  | React + TypeScript                                        | 0     |
+| T2  | Containerized with Docker                                 | 7     |
+| T3  | Clear docs for running in Docker                          | 8     |
+| T4  | DRY, KISS, SOLID                                          | all   |
 
 ## Decisions
 
