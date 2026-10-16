@@ -27,6 +27,9 @@ export const DEFAULT_NEWSAPI_OUTLETS = [
   'national-geographic',
 ] as const
 
+/** Free plan rejects requests beyond the first 100 results. */
+export const MAX_RESULTS = 100
+
 /** NewsAPI rejects more than 20 sources per request. */
 export const MAX_SOURCES_PER_REQUEST = 20
 
@@ -118,6 +121,8 @@ export function createNewsApiProvider(): NewsProvider {
     name: 'NewsAPI',
     listOutlets,
     async search(query: ArticleQuery, signal?: AbortSignal) {
+      const page = query.page ?? 1
+      if (page * PAGE_SIZE > MAX_RESULTS) return []
       const outlets = await listOutlets()
       const sources = resolveSources(outlets, query.outletIds, query.categories)
       if (!sources.length) return []
@@ -131,7 +136,7 @@ export function createNewsApiProvider(): NewsProvider {
           language: 'en',
           sortBy: 'publishedAt',
           pageSize: PAGE_SIZE,
-          page: query.page ?? 1,
+          page,
         },
         signal,
       )

@@ -97,8 +97,13 @@ describe('dedupe', () => {
       article({ url: 'https://x.com/a/', title: 'A copy' }),
       article({ url: 'https://y.com/b', title: ' a ' }),
       article({ url: 'https://z.com/c', title: 'C' }),
+      article({ url: 'https://z.com/c2', title: 'C', publishedAt: '2026-10-02T00:00:00Z' }),
     ]
-    expect(dedupe(items).map((a) => a.url)).toEqual(['https://x.com/a?utm=1', 'https://z.com/c'])
+    expect(dedupe(items).map((a) => a.url)).toEqual([
+      'https://x.com/a?utm=1',
+      'https://z.com/c',
+      'https://z.com/c2',
+    ])
   })
 })
 

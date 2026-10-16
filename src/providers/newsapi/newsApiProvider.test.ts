@@ -82,6 +82,12 @@ describe('newsApiProvider', () => {
     expect(result[0]).toMatchObject({ author: undefined, category: 'technology' })
   })
 
+  it('stops paging past the free-plan result cap', async () => {
+    const fetch = mockNewsApi()
+    expect(await createNewsApiProvider().search({ page: 6 })).toEqual([])
+    expect(fetch).not.toHaveBeenCalled()
+  })
+
   it('skips the request when no source matches the categories', async () => {
     const fetch = mockNewsApi()
     const result = await createNewsApiProvider().search({

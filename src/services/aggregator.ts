@@ -30,11 +30,14 @@ const normalizeUrl = (url: string) =>
     .replace(/\/$/, '')
     .toLowerCase()
 
-/** Removes the same story syndicated under the same URL or headline. */
+/** Removes the same story syndicated under the same URL, or same headline on the same day. */
 export const dedupe = (articles: Article[]): Article[] => {
   const seen = new Set<string>()
   return articles.filter((a) => {
-    const keys = [normalizeUrl(a.url), a.title.trim().toLowerCase()]
+    const keys = [
+      normalizeUrl(a.url),
+      `${a.title.trim().toLowerCase()}|${a.publishedAt.slice(0, 10)}`,
+    ]
     if (keys.some((k) => seen.has(k))) return false
     keys.forEach((k) => seen.add(k))
     return true
