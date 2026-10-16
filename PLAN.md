@@ -1,0 +1,64 @@
+# News Aggregator — Implementation Plan
+
+Innoscripta SE Frontend Developer case study.
+
+## Requirements checklist
+
+| # | Requirement | Phase |
+|---|---|---|
+| F1 | Search articles by keyword | 3 |
+| F2 | Filter results by date, category, source | 3 |
+| F3 | Personalized feed: preferred sources, categories, authors | 4, 5 |
+| F4 | Mobile-responsive design | 2, 6 |
+| F5 | Clean, easy-to-read article display | 2, 6 |
+| D1 | At least 3 data sources | 1 |
+| T1 | React + TypeScript | 0 |
+| T2 | Containerized with Docker | 7 |
+| T3 | Clear docs for running in Docker | 8 |
+| T4 | DRY, KISS, SOLID | all |
+
+## Decisions
+
+- **Providers:** The Guardian, New York Times, NewsAPI.org.
+- **Provider → outlet model:** users see outlets (The Guardian, NYT, BBC, Reuters, …). NewsAPI outlets come from `/sources`; ~10 curated defaults, full list selectable via multi-select in preferences (max 20 per request).
+- **NewsAPI caveats:** `sources` can't be combined with `category` → map categories to outlets via each outlet's category. Free plan `/everything` is delayed ~24h and covers the last month → date picker constrained, documented.
+- **Author filtering:** client-side on merged results (no provider supports it well).
+- **Keys & CORS:** nginx reverse proxy in the container injects API keys at runtime; keys never ship in the JS bundle. Vite dev server uses the same proxy paths.
+- **Stack:** Vite, React, TypeScript (strict), React Router, `@tanstack/react-query` v5, Zustand (persisted prefs), HeroUI + Tailwind, Framer Motion, Vitest + Testing Library, ESLint + Prettier.
+
+## Architecture
+
+```
+src/
+  domain/        Article, ArticleQuery, Outlet, Category types
+  providers/     NewsProvider interface + guardian/, nyt/, newsapi/ adapters, registry
+  services/      aggregator (fan-out, merge, sort, dedupe, partial-failure)
+  features/      search/, feed/, preferences/, onboarding/
+  components/    shared UI (ArticleCard, FilterChips, …)
+  lib/           http client, date utils
+```
+
+- `NewsProvider` interface: `search(query): Promise<ProviderResult>` + `capabilities` (which filters it supports).
+- Adding a provider = new adapter + registry entry (open/closed).
+- UI depends on hooks → aggregator → interface, never on a concrete API (dependency inversion).
+- Aggregator tolerates individual provider failures and reports them to the UI.
+
+## UX direction
+
+Editorial magazine aesthetic: serif headlines, lead story + bento grid, outlet favicons/chips, reading time. ⌘K search, removable filter chips, URL-synced filters. Onboarding chip picker on first visit. Mobile: bottom tab bar, bottom-sheet filters, infinite scroll. Skeletons, friendly empty/error states, dark mode, subtle motion.
+
+## Phases (one PR each)
+
+0. **Scaffold** — Vite + TS, Tailwind + HeroUI, lint/format/test, folder structure, `.env.example`, CI (lint, typecheck, test, build).
+1. **Data layer** — domain types, 3 adapters, outlet catalog, aggregator, unit tests for mappings.
+2. **Design system** — tokens, typography, layout shell, ArticleCard, skeletons, dark mode.
+3. **Search** — keyword, date range, category, source filters; URL state; empty/error/partial states.
+4. **Preferences** — sources (multi-select), categories, authors; persisted.
+5. **Feed + onboarding** — personalized home built from preferences; first-run picker.
+6. **Mobile & polish** — bottom nav, filter sheet, infinite scroll, a11y pass, Lighthouse.
+7. **Docker** — multi-stage build → nginx with API proxy, runtime env keys, docker-compose.
+8. **Docs** — README: setup, Docker, architecture, decisions, limitations.
+
+## Workflow
+
+Feature branch per phase → PR → review (`/code-review`) → squash merge into `main`.
