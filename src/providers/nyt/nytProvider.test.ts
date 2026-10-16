@@ -7,6 +7,7 @@ const doc = {
   web_url: 'https://www.nytimes.com/2026/10/01/business/sample.html',
   abstract: 'Sample abstract',
   pub_date: '2026-10-01T10:00:00Z',
+  word_count: 1200,
   section_name: 'Business',
   headline: { main: 'Sample headline' },
   byline: { original: 'By John Roe' },
@@ -38,6 +39,7 @@ describe('nytProvider', () => {
       author: 'John Roe',
       imageUrl: 'https://static01.nyt.com/x.jpg',
       category: 'business',
+      wordCount: 1200,
       outlet: { id: 'the-new-york-times', provider: 'nyt' },
     })
   })

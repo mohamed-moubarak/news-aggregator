@@ -45,17 +45,38 @@ src/
 
 ## UX direction
 
-Editorial magazine aesthetic: serif headlines, lead story + bento grid, outlet favicons/chips, reading time. ⌘K search, removable filter chips, URL-synced filters. Onboarding chip picker on first visit. Mobile: bottom tab bar, bottom-sheet filters, infinite scroll. Skeletons, friendly empty/error states, dark mode, subtle motion.
+Approved mockups: "newsstand" direction. Each card has an outlet-coloured spine; Newsreader + Schibsted Grotesk; cool grey paper, navy ink, cobalt accent. Name: **Briefly**. Feeds stay strictly newest-first.
+
+### UX checklist
+
+| Agreed point                                                    | Status                                 |
+| --------------------------------------------------------------- | -------------------------------------- |
+| Serif headlines, large lead story                               | Done (Phase 2)                         |
+| Mixed-size card grid                                            | Done (polish)                          |
+| Outlet favicon + colour spine                                   | Done (polish)                          |
+| Card-shaped skeletons, empty/error states, dark mode            | Done (Phase 2)                         |
+| Reading time (Guardian and NYT only; NewsAPI has no word count) | Done (polish)                          |
+| 44px tap targets                                                | Done (polish), keep checking per phase |
+| Page transitions (View Transitions, no extra dependency)        | Done (polish)                          |
+| ⌘K opens search                                                 | Phase 3                                |
+| Removable filter chips, shareable URL                           | Phase 3                                |
+| Mobile filter sheet                                             | Phase 3                                |
+| Infinite scroll                                                 | Phase 3                                |
+| Follow an author from a card                                    | Phase 4                                |
+| First-visit picker: topics, outlets, authors                    | Phase 5                                |
+| Pull to refresh                                                 | Phase 6                                |
+
+Animation note: HeroUI v3 doesn't ship Framer Motion. Use CSS/View Transitions and HeroUI's built-in overlay animations; add `motion` only if a specific interaction needs it.
 
 ## Phases (one PR each)
 
 0. **Scaffold** — Vite + TS, Tailwind + HeroUI, lint/format/test, folder structure, `.env.example`, CI (lint, typecheck, test, build).
 1. **Data layer** — domain types, 3 adapters, outlet catalog, aggregator, unit tests for mappings.
 2. **Design system** — tokens, typography, layout shell, ArticleCard, skeletons, dark mode.
-3. **Search** — keyword, date range, category, source filters; URL state; empty/error/partial states.
-4. **Preferences** — sources (multi-select), categories, authors; persisted.
-5. **Feed + onboarding** — personalized home built from preferences; first-run picker.
-6. **Mobile & polish** — bottom nav, filter sheet, infinite scroll, a11y pass, Lighthouse.
+3. **Search** — keyword, date range, category, source filters; URL state; ⌘K; filter chips; mobile filter sheet; infinite scroll; empty/error/partial states.
+4. **Preferences** — sources (multi-select), categories, authors; persisted; follow author from a card.
+5. **Feed + onboarding** — personalized home built from preferences; first-run picker (topics, outlets, suggested authors).
+6. **Mobile & polish** — pull to refresh, a11y pass, Lighthouse.
 7. **Docker** — multi-stage build → nginx with API proxy, runtime env keys, docker-compose.
 8. **Docs** — README: setup, Docker, architecture, decisions, limitations.
 

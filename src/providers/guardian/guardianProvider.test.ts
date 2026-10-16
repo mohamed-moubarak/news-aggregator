@@ -12,6 +12,7 @@ const result = {
     trailText: '<p>Sample <b>trail</b></p>',
     thumbnail: 'https://img/x.jpg',
     byline: 'Jane Doe',
+    wordcount: '920',
   },
 }
 
@@ -49,6 +50,7 @@ describe('guardianProvider', () => {
       imageUrl: 'https://img/x.jpg',
       author: 'Jane Doe',
       publishedAt: '2026-10-01T10:00:00Z',
+      wordCount: 920,
       outlet: expect.objectContaining({ id: 'the-guardian', provider: 'guardian' }),
       category: 'technology',
     })

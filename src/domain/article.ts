@@ -10,6 +10,8 @@ export interface Article {
   imageUrl?: string
   author?: string
   publishedAt: string
+  /** Only some providers report this; used for reading time. */
+  wordCount?: number
   outlet: Pick<Outlet, 'id' | 'name' | 'provider'>
   category?: CategoryId
 }

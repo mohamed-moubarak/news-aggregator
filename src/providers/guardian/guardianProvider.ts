@@ -29,7 +29,7 @@ interface GuardianResult {
   webTitle: string
   webUrl: string
   webPublicationDate: string
-  fields?: { trailText?: string; thumbnail?: string; byline?: string }
+  fields?: { trailText?: string; thumbnail?: string; byline?: string; wordcount?: string }
 }
 
 export interface GuardianResponse {
@@ -44,6 +44,7 @@ export const toArticle = (r: GuardianResult): Article => ({
   imageUrl: r.fields?.thumbnail,
   author: cleanAuthor(r.fields?.byline),
   publishedAt: r.webPublicationDate,
+  wordCount: Number(r.fields?.wordcount) || undefined,
   outlet: OUTLET,
   category: fromProviderValue(GUARDIAN_SECTIONS, r.sectionId),
 })
@@ -61,7 +62,7 @@ export const guardianProvider: NewsProvider = {
         'from-date': query.from,
         'to-date': query.to,
         section: sections.join('|') || undefined,
-        'show-fields': 'trailText,thumbnail,byline',
+        'show-fields': 'trailText,thumbnail,byline,wordcount',
         'order-by': 'newest',
         'page-size': PAGE_SIZE,
         page: query.page ?? 1,
