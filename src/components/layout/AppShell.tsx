@@ -1,5 +1,8 @@
+import { Kbd } from '@heroui/react'
 import { Search } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
+
+import { isMac, useSearchShortcut } from '@/hooks/useSearchShortcut'
 
 import { Logo } from './Logo'
 import { NAV_ITEMS } from './navItems'
@@ -31,10 +34,13 @@ function TopBar() {
         </nav>
         <Link
           to="/explore"
+          state={{ focusSearch: true }}
+          viewTransition
           className="bg-background text-muted hover:text-foreground ml-auto hidden max-w-md flex-1 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm md:flex"
         >
           <Search className="size-4" aria-hidden />
           Search news
+          <Kbd className="ml-auto">{isMac() ? '⌘' : 'Ctrl'} K</Kbd>
         </Link>
         <div className="ml-auto flex items-center gap-1 md:ml-0">
           <ThemeToggle />
@@ -77,6 +83,7 @@ function BottomNav() {
 }
 
 export function AppShell() {
+  useSearchShortcut()
   return (
     <>
       <a

@@ -2,6 +2,7 @@ import type { Outlet } from '@/domain'
 import { requestedUrl } from '@/test/fetch'
 
 import {
+  clampToSearchWindow,
   createNewsApiProvider,
   DEFAULT_NEWSAPI_OUTLETS,
   MAX_SOURCES_PER_REQUEST,
@@ -55,6 +56,23 @@ describe('resolveSources', () => {
   it('caps the number of sources per request', () => {
     const many = Array.from({ length: 30 }, (_, i) => `s${i}`)
     expect(resolveSources([], many, undefined)).toHaveLength(MAX_SOURCES_PER_REQUEST)
+  })
+})
+
+describe('clampToSearchWindow', () => {
+  const now = new Date('2026-10-16T12:00:00Z')
+  it('moves an early or missing start into the window', () => {
+    expect(clampToSearchWindow(undefined, undefined, now)).toEqual({ from: '2026-09-17' })
+    expect(clampToSearchWindow('2026-01-01', '2026-10-10', now)).toEqual({
+      from: '2026-09-17',
+      to: '2026-10-10',
+    })
+  })
+  it('keeps a start inside the window', () => {
+    expect(clampToSearchWindow('2026-10-01', undefined, now)).toEqual({ from: '2026-10-01' })
+  })
+  it('skips ranges entirely before the window', () => {
+    expect(clampToSearchWindow('2026-01-01', '2026-02-01', now)).toBeNull()
   })
 })
 

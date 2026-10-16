@@ -24,6 +24,8 @@
   --link: var(--accent);
   --highlight: #fff1a8;
   --radius: 0.625rem;
+  /* Fields sit on white surfaces, so they need a visible outline. */
+  --field-border-width: 1px;
 }
 
 .dark,
