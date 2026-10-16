@@ -1,6 +1,7 @@
-import { DateRangePicker, Label, RangeCalendar } from '@heroui/react'
+import { Button, Popover, RangeCalendar } from '@heroui/react'
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date'
 import { CalendarDays } from 'lucide-react'
+import { useId, useState } from 'react'
 
 import { ToggleChip } from '@/components/ui/ToggleChip'
 
@@ -20,8 +21,73 @@ interface DateRangeFilterProps {
   onChange: (range: { from?: string; to?: string }) => void
 }
 
-export function DateRangeFilter({ from, to, onChange }: DateRangeFilterProps) {
+/**
+ * Range calendar in a popover, opened from one compact trigger. (Inline
+ * mm/dd/yyyy fields don't fit the narrow filter panel.)
+ */
+function CustomRange({ from, to, onChange }: DateRangeFilterProps) {
+  const [open, setOpen] = useState(false)
+  // The panel renders twice (sidebar + mobile sheet), so ids must be unique.
+  const id = useId()
   const value = from && to ? { start: parseDate(from), end: parseDate(to) } : null
+
+  return (
+    <div className="grid gap-1.5">
+      <span id={`${id}-label`} className="text-muted text-xs">
+        Custom range
+      </span>
+      <Popover isOpen={open} onOpenChange={setOpen}>
+        <Button
+          variant="outline"
+          aria-labelledby={`${id}-label ${id}-value`}
+          className="h-11 w-full min-w-0 justify-between rounded-xl px-3.5 text-sm font-normal"
+        >
+          <span id={`${id}-value`} className={`truncate ${value ? '' : 'text-field-placeholder'}`}>
+            {value ? formatRange(from!, to!) : 'Choose dates'}
+          </span>
+          <CalendarDays className="text-muted size-4 shrink-0" aria-hidden />
+        </Button>
+        <Popover.Content placement="bottom start">
+          <Popover.Dialog aria-label="Choose a date range" className="p-2">
+            <RangeCalendar
+              aria-label="Date range"
+              value={value}
+              maxValue={today(getLocalTimeZone())}
+              onChange={(range) => {
+                onChange({ from: range.start.toString(), to: range.end.toString() })
+                setOpen(false)
+              }}
+            >
+              <RangeCalendar.Header>
+                <RangeCalendar.YearPickerTrigger>
+                  <RangeCalendar.YearPickerTriggerHeading />
+                  <RangeCalendar.YearPickerTriggerIndicator />
+                </RangeCalendar.YearPickerTrigger>
+                <RangeCalendar.NavButton slot="previous" />
+                <RangeCalendar.NavButton slot="next" />
+              </RangeCalendar.Header>
+              <RangeCalendar.Grid>
+                <RangeCalendar.GridHeader>
+                  {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
+                </RangeCalendar.GridHeader>
+                <RangeCalendar.GridBody>
+                  {(date) => <RangeCalendar.Cell date={date} />}
+                </RangeCalendar.GridBody>
+              </RangeCalendar.Grid>
+              <RangeCalendar.YearPickerGrid>
+                <RangeCalendar.YearPickerGridBody>
+                  {({ year }) => <RangeCalendar.YearPickerCell year={year} />}
+                </RangeCalendar.YearPickerGridBody>
+              </RangeCalendar.YearPickerGrid>
+            </RangeCalendar>
+          </Popover.Dialog>
+        </Popover.Content>
+      </Popover>
+    </div>
+  )
+}
+
+export function DateRangeFilter({ from, to, onChange }: DateRangeFilterProps) {
   const active = matchPreset(from, to)
   return (
     <div className="grid gap-2.5">
@@ -43,46 +109,7 @@ export function DateRangeFilter({ from, to, onChange }: DateRangeFilterProps) {
           </ToggleChip>
         ))}
       </div>
-      <DateRangePicker
-        value={value}
-        maxValue={today(getLocalTimeZone())}
-        onChange={(range) => onChange({ from: range?.start.toString(), to: range?.end.toString() })}
-        className="w-full"
-      >
-        <Label className="text-muted text-xs">Custom range</Label>
-        {/* A single trigger instead of inline mm/dd/yyyy fields, which don't fit narrow panels. */}
-        <DateRangePicker.Trigger className="border-field-border bg-field text-field-foreground hover:bg-field-hover flex h-11 w-full min-w-0 items-center justify-between gap-2 rounded-xl border px-3.5 text-sm">
-          <span className={`truncate ${value ? '' : 'text-field-placeholder'}`}>
-            {value ? formatRange(from!, to!) : 'Choose dates'}
-          </span>
-          <CalendarDays className="text-muted size-4 shrink-0" aria-hidden />
-        </DateRangePicker.Trigger>
-        <DateRangePicker.Popover>
-          <RangeCalendar aria-label="Date range">
-            <RangeCalendar.Header>
-              <RangeCalendar.YearPickerTrigger>
-                <RangeCalendar.YearPickerTriggerHeading />
-                <RangeCalendar.YearPickerTriggerIndicator />
-              </RangeCalendar.YearPickerTrigger>
-              <RangeCalendar.NavButton slot="previous" />
-              <RangeCalendar.NavButton slot="next" />
-            </RangeCalendar.Header>
-            <RangeCalendar.Grid>
-              <RangeCalendar.GridHeader>
-                {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
-              </RangeCalendar.GridHeader>
-              <RangeCalendar.GridBody>
-                {(date) => <RangeCalendar.Cell date={date} />}
-              </RangeCalendar.GridBody>
-            </RangeCalendar.Grid>
-            <RangeCalendar.YearPickerGrid>
-              <RangeCalendar.YearPickerGridBody>
-                {({ year }) => <RangeCalendar.YearPickerCell year={year} />}
-              </RangeCalendar.YearPickerGridBody>
-            </RangeCalendar.YearPickerGrid>
-          </RangeCalendar>
-        </DateRangePicker.Popover>
-      </DateRangePicker>
+      <CustomRange from={from} to={to} onChange={onChange} />
     </div>
   )
 }
