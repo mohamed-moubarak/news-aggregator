@@ -8,7 +8,8 @@ import { useIsFollowing, usePreferences } from './preferencesStore'
  */
 export function FollowAuthorButton({ author }: { author: string }) {
   const following = useIsFollowing(author)
-  const { followAuthor, unfollowAuthor } = usePreferences()
+  const followAuthor = usePreferences((s) => s.followAuthor)
+  const unfollowAuthor = usePreferences((s) => s.unfollowAuthor)
 
   return (
     <button

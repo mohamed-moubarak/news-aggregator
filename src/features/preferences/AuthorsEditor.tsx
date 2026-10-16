@@ -7,7 +7,8 @@ import { usePreferences } from './preferencesStore'
 /** Followed authors: add by name, remove individually. */
 export function AuthorsEditor() {
   const authors = usePreferences((s) => s.authors)
-  const { followAuthor, unfollowAuthor } = usePreferences()
+  const followAuthor = usePreferences((s) => s.followAuthor)
+  const unfollowAuthor = usePreferences((s) => s.unfollowAuthor)
   const [name, setName] = useState('')
 
   const add = (e: FormEvent) => {
