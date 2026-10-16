@@ -30,6 +30,25 @@ export const DEFAULT_NEWSAPI_OUTLETS = [
 /** Free plan rejects requests beyond the first 100 results. */
 export const MAX_RESULTS = 100
 
+/** Free plan only searches roughly the last month. */
+export const SEARCH_WINDOW_DAYS = 29
+
+/**
+ * Clamps a date range to the free plan's search window. Returns null when the
+ * whole range is older than the window, so the request can be skipped.
+ */
+export function clampToSearchWindow(
+  from: string | undefined,
+  to: string | undefined,
+  now = new Date(),
+): { from?: string; to?: string } | null {
+  const earliest = new Date(now.getTime() - SEARCH_WINDOW_DAYS * 86_400_000)
+    .toISOString()
+    .slice(0, 10)
+  if (to && to < earliest) return null
+  return { from: !from || from < earliest ? earliest : from, to }
+}
+
 /** NewsAPI rejects more than 20 sources per request. */
 export const MAX_SOURCES_PER_REQUEST = 20
 
@@ -123,6 +142,8 @@ export function createNewsApiProvider(): NewsProvider {
     async search(query: ArticleQuery, signal?: AbortSignal) {
       const page = query.page ?? 1
       if (page * PAGE_SIZE > MAX_RESULTS) return []
+      const range = clampToSearchWindow(query.from, query.to)
+      if (!range) return []
       const outlets = await listOutlets()
       const sources = resolveSources(outlets, query.outletIds, query.categories)
       if (!sources.length) return []
@@ -131,8 +152,8 @@ export function createNewsApiProvider(): NewsProvider {
         {
           q: query.keyword,
           sources: sources.join(','),
-          from: query.from,
-          to: query.to,
+          from: range.from,
+          to: range.to,
           language: 'en',
           sortBy: 'publishedAt',
           pageSize: PAGE_SIZE,
