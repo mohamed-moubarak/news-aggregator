@@ -4,12 +4,13 @@ import { CATEGORIES, isCategoryId, type CategoryId } from '@/domain'
 
 import { CheckboxOption } from './CheckboxOption'
 
-interface CategoryFilterProps {
+interface CategoryPickerProps {
+  label?: string
   value: CategoryId[] | undefined
   onChange: (categories: CategoryId[] | undefined) => void
 }
 
-export function CategoryFilter({ value = [], onChange }: CategoryFilterProps) {
+export function CategoryPicker({ label = 'Category', value = [], onChange }: CategoryPickerProps) {
   return (
     <CheckboxGroup
       value={value}
@@ -19,7 +20,7 @@ export function CategoryFilter({ value = [], onChange }: CategoryFilterProps) {
       }}
       className="gap-0"
     >
-      <Label className="mb-1 text-sm font-semibold">Category</Label>
+      <Label className="mb-1 text-sm font-semibold">{label}</Label>
       {CATEGORIES.map((c) => (
         <CheckboxOption key={c.id} value={c.id} label={c.label} />
       ))}
