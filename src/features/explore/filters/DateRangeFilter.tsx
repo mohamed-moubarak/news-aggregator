@@ -1,9 +1,18 @@
-import { DateField, DateRangePicker, Label, RangeCalendar } from '@heroui/react'
+import { DateRangePicker, Label, RangeCalendar } from '@heroui/react'
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date'
+import { CalendarDays } from 'lucide-react'
 
 import { ToggleChip } from '@/components/ui/ToggleChip'
 
 import { DATE_PRESETS, matchPreset, presetRange } from './datePresets'
+
+const dayMonth = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+})
+const formatRange = (from: string, to: string) =>
+  dayMonth.formatRange(new Date(`${from}T00:00:00`), new Date(`${to}T00:00:00`))
 
 interface DateRangeFilterProps {
   from?: string
@@ -41,20 +50,13 @@ export function DateRangeFilter({ from, to, onChange }: DateRangeFilterProps) {
         className="w-full"
       >
         <Label className="text-muted text-xs">Custom range</Label>
-        <DateField.Group fullWidth className="min-w-0 text-[13px]">
-          <DateField.Input slot="start">
-            {(segment) => <DateField.Segment segment={segment} />}
-          </DateField.Input>
-          <DateRangePicker.RangeSeparator />
-          <DateField.Input slot="end">
-            {(segment) => <DateField.Segment segment={segment} />}
-          </DateField.Input>
-          <DateField.Suffix>
-            <DateRangePicker.Trigger>
-              <DateRangePicker.TriggerIndicator />
-            </DateRangePicker.Trigger>
-          </DateField.Suffix>
-        </DateField.Group>
+        {/* A single trigger instead of inline mm/dd/yyyy fields, which don't fit narrow panels. */}
+        <DateRangePicker.Trigger className="border-field-border bg-field text-field-foreground hover:bg-field-hover flex h-11 w-full min-w-0 items-center justify-between gap-2 rounded-xl border px-3.5 text-sm">
+          <span className={`truncate ${value ? '' : 'text-field-placeholder'}`}>
+            {value ? formatRange(from!, to!) : 'Choose dates'}
+          </span>
+          <CalendarDays className="text-muted size-4 shrink-0" aria-hidden />
+        </DateRangePicker.Trigger>
         <DateRangePicker.Popover>
           <RangeCalendar aria-label="Date range">
             <RangeCalendar.Header>
