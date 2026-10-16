@@ -16,3 +16,22 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: briefly-news:ci
+          load: true
+      - name: Smoke test
+        run: |
+          docker run -d --name web -p 8080:8080 \
+            -e GUARDIAN_API_KEY=x -e NYT_API_KEY=x -e NEWSAPI_API_KEY=x briefly-news:ci
+          for i in $(seq 1 15); do curl -fs http://localhost:8080/healthz && break; sleep 1; done
+          curl -fs http://localhost:8080/explore | grep -q '<div id="root">'
